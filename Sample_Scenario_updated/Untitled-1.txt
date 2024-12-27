@@ -1,0 +1,25 @@
+if project_filter == "All Projects":
+            #Table 1 :- Project Information
+            Project_Information = project_list[["Project Name","Expected to Complete(Weeks)","Start Date"]]
+            Project_Information = Project_Information ###COpy the DF
+            Project_Information = Project_Information.rename(columns={"Expected to Complete(Weeks)": "Total Duration(Weeks)"})
+            # the Project_Information is your DataFrame and the Start Date is in datetime format.
+            Project_Information["Start Date"] = pd.to_datetime(Project_Information["Start Date"])
+            # Calculate the End Date by adding the Total Duration (in weeks) to the Start Date
+            Project_Information["End Date"] = Project_Information["Start Date"] + pd.to_timedelta(Project_Information["Total Duration(Weeks)"], unit="W")
+            Project_Information["End Date"] = Project_Information["End Date"].dt.date #to remove the time stamp 00:00:00
+            Project_Information["Start Date"] = Project_Information["Start Date"].dt.date#to remove the time stamp 00:00:00
+            #Merge the first_theree_cols table and the main_table on PRoject name to get the Toatal hours 
+            #temp_join_for_total_hours = Project_Information.merge(main_table, on='Project Name', how='inner')
+            ###########st.dataframe(temp_join_for_total_hours)
+            #Project_Information["Total Hours"] = temp_join_for_total_hours[["Time(in hours)"]]
+            Project_Information["Total Hours"] = Project_Information["Total Duration(Weeks)"] * 40
+            # Calculate Average Hours Per Week (8 hrs * 5 days)
+            Project_Information["Average Hours Per Week"] = Project_Information["Total Hours"]/(40)
+            Project_Information["Average FTE/week"] = Project_Information["Average Hours Per Week"]/40
+            Project_Information["Total weeks elapsed till date"] = 
+            Project_Information["Total hours spent till date"] = 
+
+            st.subheader("Project Informataion")
+            # Display the dataframe with increased width
+            st.dataframe(Project_Information, use_container_width=True)
